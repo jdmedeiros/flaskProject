@@ -8,15 +8,15 @@ app = Flask(__name__)
 # Compute the hash of the text provided using the hash algorithm provided
 def calculate_hash(text, algorithm="SHA-256"):
     if algorithm == "MD5":
-        return hashlib.md5(text).hexdigest()
+        return True, hashlib.md5(text).hexdigest()
     elif algorithm == "SHA-1":
-        return hashlib.sha1(text).hexdigest()
+        return True, hashlib.sha1(text).hexdigest()
     elif algorithm == "SHA-224":
-        return hashlib.sha224(text).hexdigest()
+        return True, hashlib.sha224(text).hexdigest()
     elif algorithm == "SHA-256":
-        return hashlib.sha256(text).hexdigest()
+        return True, hashlib.sha256(text).hexdigest()
     elif algorithm == "SHA-384":
-        return hashlib.sha384(text).hexdigest()
+        return True, hashlib.sha384(text).hexdigest()
     elif algorithm == "SHA-512":
         return True, hashlib.sha512(text).hexdigest()
     else:
