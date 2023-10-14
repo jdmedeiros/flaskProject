@@ -20,7 +20,7 @@ def calculate_hash(text, algorithm="SHA-256"):
     elif algorithm == "SHA-512":
         return True, hashlib.sha512(text).hexdigest()
     else:
-        return False, 'Invalid algorithm. Must be one of [MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512]'
+        return False, 'Invalid algorithm. The algorithm must be one of [MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512]'
 
 
 @app.route('/')
