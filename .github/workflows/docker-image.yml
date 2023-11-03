@@ -24,4 +24,4 @@ jobs:
         docker buildx create --use
         docker buildx build --file Dockerfile --tag your-docker-hub-username/k8s:latest .
         docker buildx stop --builder default
-        docker push your-docker-hub-username/k8s:latest
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/k8s:latest
