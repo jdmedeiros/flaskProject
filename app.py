@@ -1,4 +1,6 @@
 import hashlib
+import socket
+import os
 
 from flask import Flask, jsonify, request
 
@@ -26,7 +28,7 @@ def calculate_hash(text, algorithm="SHA-256"):
 @app.route('/')
 def welcome():
     requesturl = request.url
-    return 'Valid endpoints are: <a href="' + requesturl + 'algorithms">algorithms</a> and <a href="' \
+    return 'Valid endpoints are: status, <a href="' + requesturl + 'algorithms">algorithms</a> and <a href="' \
            + requesturl + 'hash?text=ABCDEFG&algorithm=SHA-512 ' \
                           '">hash</a><BR><P> Hash algorithm must be one of: <B>MD5, SHA-1, ' \
                           'SHA-224, SHA-256, SHA-384, SHA-512.</B> It defaults to SHA-512.'
@@ -46,6 +48,24 @@ def compute():
         return jsonify(text=text, algorithm=algorithm, hash=result)
     else:
         return jsonify(Error=result)
+
+
+@app.get("/status")
+def system_status():
+    hostname = socket.gethostname()
+    ip = socket.gethostbyname(hostname)
+    os_info = {
+        "platform": os.uname().sysname,
+        "release": os.uname().release,
+        "version": os.uname().version,
+        "machine": os.uname().machine,
+    }
+
+    return jsonify(
+        hostname=hostname,
+        ip=ip,
+        os=os_info
+    )
 
 
 if __name__ == '__main__':
