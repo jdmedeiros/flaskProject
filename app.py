@@ -71,7 +71,7 @@ def system_status():
         "hostname": hostname,
         "ip": ip,
         "os": os_info,
-        "release": "v1.0.6"
+        "release": "v1.0.7"
     }
 
     # Create a response object
