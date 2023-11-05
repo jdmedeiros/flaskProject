@@ -8,6 +8,7 @@ app = Flask(__name__)
 
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
+
 # Compute the hash of the text provided using the hash algorithm provided
 def calculate_hash(text, algorithm="SHA-256"):
     if algorithm == "MD5":
@@ -66,16 +67,21 @@ def system_status():
         "machine": os.uname().machine,
     }
 
-    response = make_response(jsonify(
-        hostname=hostname,
-        ip=ip,
-        os=os_info,
-        release="v1.0.6"
-    ))
+    response_data = {
+        "hostname": hostname,
+        "ip": ip,
+        "os": os_info,
+        "release": "v1.0.6"
+    }
 
+    # Create a response object
+    response = make_response(jsonify(response_data))
+
+    # Set the Content-Type header to 'application/json'
     response.headers['Content-Type'] = 'application/json'
+
+    return response
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
