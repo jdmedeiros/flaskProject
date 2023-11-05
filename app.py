@@ -6,6 +6,7 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 # Compute the hash of the text provided using the hash algorithm provided
 def calculate_hash(text, algorithm="SHA-256"):
