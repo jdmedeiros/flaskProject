@@ -66,12 +66,14 @@ def system_status():
         "machine": os.uname().machine,
     }
 
-    return jsonify(
+    response = make_response(jsonify(
         hostname=hostname,
         ip=ip,
         os=os_info,
         release="v1.0.5"
-    )
+    ))
+
+    response.headers['Content-Type'] = 'application/json'
 
 
 if __name__ == '__main__':
