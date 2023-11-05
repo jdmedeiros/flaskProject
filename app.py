@@ -69,7 +69,8 @@ def system_status():
     return jsonify(
         hostname=hostname,
         ip=ip,
-        os=os_info
+        os=os_info,
+        release="v1.0.5"
     )
 
 
