@@ -28,7 +28,7 @@ jobs:
       - name: Set image tags
         run: |
           echo "::set-output name=latest_tag::latest"
-          echo "::set-output name=version_tag::v$GITHUB_REF"
+          echo "::set-output name=version_tag::v${{ github.event.release.tag_name }}"
 
       - name: Build and push Docker image with tags
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
@@ -37,6 +37,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            jdmedeiros/k8s:$GITHUB_REF
+            jdmedeiros/k8s:$version_tag
             jdmedeiros/k8s:$latest_tag
-
