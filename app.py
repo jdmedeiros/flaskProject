@@ -28,10 +28,14 @@ def calculate_hash(text, algorithm="SHA-256"):
 @app.route('/')
 def welcome():
     requesturl = request.url
-    return 'Valid endpoints are: status, <a href="' + requesturl + 'algorithms">algorithms</a> and <a href="' \
-           + requesturl + 'hash?text=ABCDEFG&algorithm=SHA-512 ' \
-                          '">hash</a><BR><P> Hash algorithm must be one of: <B>MD5, SHA-1, ' \
-                          'SHA-224, SHA-256, SHA-384, SHA-512.</B> It defaults to SHA-512.'
+    message = {
+        "message": "Valid endpoints are: status, algorithms, and hash",
+        "link_algorithms": requesturl + 'algorithms',
+        "link_hash": requesturl + 'hash?text=ABCDEFG&algorithm=SHA-512',
+        "hash_algorithm_options": "Hash algorithm must be one of: MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512. It "
+                                  "defaults to SHA-512."
+    }
+    return jsonify(message)
 
 
 @app.get("/algorithms")
