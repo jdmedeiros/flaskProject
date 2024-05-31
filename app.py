@@ -71,7 +71,7 @@ def system_status():
         "hostname": hostname,
         "ip": ip,
         "os": os_info,
-        "release": "v1.0.7"
+        "release": "v2.0.0"
     }
 
     # Create a response object
@@ -82,6 +82,30 @@ def system_status():
 
     return response
 
+
+@app.get("/os")
+def system_status():
+    hostname = socket.gethostname()
+    ip = socket.gethostbyname(hostname)
+    os_info = {
+        "platform": os.uname().sysname,
+        "release": os.uname().release,
+        "version": os.uname().version,
+        "machine": os.uname().machine,
+    }
+
+    response_data = {
+        "os": os_info,
+        "release": "v2.0.0"
+    }
+
+    # Create a response object
+    response = make_response(jsonify(response_data))
+
+    # Set the Content-Type header to 'application/json'
+    response.headers['Content-Type'] = 'application/json'
+
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True)
