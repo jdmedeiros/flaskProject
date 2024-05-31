@@ -1,13 +1,13 @@
 import hashlib
 import socket
 import os
+import netifaces
 
 from flask import Flask, jsonify, request, make_response
 
 app = Flask(__name__)
 
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
-
 
 # Compute the hash of the text provided using the hash algorithm provided
 def calculate_hash(text, algorithm="SHA-256"):
@@ -26,24 +26,35 @@ def calculate_hash(text, algorithm="SHA-256"):
     else:
         return False, 'Invalid algorithm. The algorithm must be one of [MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512]'
 
+def get_ip_address():
+    # Get the IP address of the default interface
+    interfaces = netifaces.interfaces()
+    for iface in interfaces:
+        if iface != 'lo':
+            addrs = netifaces.ifaddresses(iface)
+            if netifaces.AF_INET in addrs:
+                ip_info = addrs[netifaces.AF_INET][0]
+                return ip_info['addr']
+    return "Unable to get IP address"
 
 @app.route('/')
 def welcome():
     requesturl = request.url
+    host_ip = get_ip_address()
+    client_ip = request.remote_addr
     message = {
+        "My IP": host_ip,
+        "Your IP": client_ip,
         "message": "Valid endpoints are: status, algorithms, and hash",
         "link_algorithms": requesturl + 'algorithms',
         "link_hash": requesturl + 'hash?text=ABCDEFG&algorithm=SHA-512',
-        "hash_algorithm_options": "Hash algorithm must be one of: MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512. It "
-                                  "defaults to SHA-512."
+        "hash_algorithm_options": "Hash algorithm must be one of: MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512. It defaults to SHA-512."
     }
     return jsonify(message)
-
 
 @app.get("/algorithms")
 def functions():
     return jsonify(algorithms=["MD5", "SHA-1", "SHA-224", "SHA-256", "SHA-384", "SHA-512"])
-
 
 @app.get("/hash")
 def compute():
@@ -55,11 +66,11 @@ def compute():
     else:
         return jsonify(Error=result)
 
-
 @app.get("/status")
 def system_status():
     hostname = socket.gethostname()
-    ip = socket.gethostbyname(hostname)
+    ip = get_ip_address()
+
     os_info = {
         "platform": os.uname().sysname,
         "release": os.uname().release,
@@ -82,11 +93,11 @@ def system_status():
 
     return response
 
-
 @app.get("/os")
-def system_status():
+def os_status():
     hostname = socket.gethostname()
-    ip = socket.gethostbyname(hostname)
+    ip = get_ip_address()
+
     os_info = {
         "platform": os.uname().sysname,
         "release": os.uname().release,
