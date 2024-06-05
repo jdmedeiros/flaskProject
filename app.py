@@ -45,7 +45,7 @@ def welcome():
     message = {
         "My IP": host_ip,
         "Your IP": client_ip,
-        "message": "Valid endpoints are: status, algorithms, and hash",
+        "message": "Valid endpoints are: status, algorithms and hash",
         "link_algorithms": requesturl + 'algorithms',
         "link_hash": requesturl + 'hash?text=ABCDEFG&algorithm=SHA-512',
         "hash_algorithm_options": "Hash algorithm must be one of: MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512. It defaults to SHA-512."
